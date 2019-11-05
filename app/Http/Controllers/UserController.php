@@ -7,28 +7,28 @@ use App\User;
 
 class UserController extends Controller
 {
-    //REFISTRO DE USUARIO
+    //REGISTRO DE USUARIO
     //--------------------------
     public function register(Request $request){
         
-        // Recoger los datos por POST
-            
+        // Recoger los datos por POST            
             $json = $request->input("json", null);            
             $params_array = json_decode($json, true);
         
             if(!empty($params_array)){
-
                 //  Limpiar los datos
-
                 $params_array = array_map("trim", $params_array);
 
-                // Validar datos
-    
+                // Validar datos    
                 $validate = \Validator::make($params_array, [
-                    'name'      => 'required|alpha',
-                    'surname'   => 'required|alpha',
-                    'email'     => 'required|email|unique:users', // Comprobar si el usuario existe (unique->tabla)
-                    'password'  => 'required'
+                    'rol_id'      => 'required|integer',
+                    'manager_id'  => 'required|integer',
+                    'Fname'       => 'required|alpha',
+                    'Lname'       => 'required|alpha',
+                    'Email'       => 'required|email|unique:users', // Comprobar si el usuario existe (unique->tabla)
+                    'Area'        => 'required|alpha',
+                    'Pass'        => 'required|alpha_num',
+                    'Cargo'       => 'required'                    
                 ]);
 
                 if($validate->fails()){
@@ -44,25 +44,25 @@ class UserController extends Controller
                         'code' => 200,
                         'message' => 'El usuario se ha creado correctamente'                    
                     );  
-
-                    // Cifrar la contraseña
                     
-                    $pwd = hash("sha256", $params_array["password"]);
+                    // Cifrar la contraseña                                        
+                    $pwd = hash("sha256", $params_array["Pass"]);
 
-                    // Crear usuario  
-                    
+                    // Crear usuario                      
                     $user = new User();
-                    $user->name = $params_array['name'];
-                    $user->surname = $params_array['surname'];
-                    $user->email = $params_array['email'];
-                    $user->password = $pwd;
+                    $user->rol_id = $params_array['rol_id'];
+                    $user->manager_id = $params_array['manager_id'];
+                    $user->Fname = $params_array['Fname'];
+                    $user->Lname = $params_array['Lname'];
+                    $user->Email = $params_array['Email'];
+                    $user->Area = $params_array['Area'];
+                    $user->Pass = $pwd;
+                    $user->ForgotPass = "";
+                    $user->Cargo = $params_array['Cargo'];                                       
                     
                     // guardar el usuario
-
                     $user->save();
-
                 }                
-
             }else{
                 $data  = array(
                     'status' => 'error',
@@ -71,9 +71,8 @@ class UserController extends Controller
                 );  
             }
         
-
         return response()->json($data, $data['code']);
-
+        
     }
 
     //LOGIN DE USUARIO
@@ -93,8 +92,8 @@ class UserController extends Controller
             // Validar los datos
 
             $validate = \Validator::make($params_array, [
-                'email'     => 'required|email', // Comprobar si el usuario existe (unique->tabla)
-                'password'  => 'required'
+                'Email'     => 'required|email', // Comprobar si el usuario existe (unique->tabla)
+                'Pass'  => 'required'
             ]);
 
             if($validate->fails()){
@@ -107,13 +106,13 @@ class UserController extends Controller
             }else{
 
                 // Cifrar contraseña
-                $pwd = hash("sha256", $params->password);                    
+                $pwd = hash("sha256", $params->Pass);                    
 
                 // Regresar datos o token
-                $signup = $JwtAuth->signup($params->email, $pwd);
+                $signup = $JwtAuth->signup($params->Email, $pwd);
 
                 if(!empty($params->gettoken)){
-                    $signup = $JwtAuth->signup($params->email, $pwd, true);
+                    $signup = $JwtAuth->signup($params->Email, $pwd, true);
                 }
                 
             }

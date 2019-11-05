@@ -6,10 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    protected $tabla = 'categories';
+    protected $tabla = 'multicategoria';
+
+    protected $fillable = [
+        'project_id', 'Mname',
+    ];
 
     // Relacion de uno a muchos
-    public function posts(){
-        return $this->hasMany('App\Post');
+    public function projects(){
+        return $this->hasMany(Project::class);
     }
 }

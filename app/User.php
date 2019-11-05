@@ -10,13 +10,15 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    protected $table = 'users';
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'surname', 'description', 'email', 'password',
+        'rol_id', 'manager_id', 'Fname', 'Lname', 'Email', 'Area', 'Pass', 'ForgotPass', 'Cargo', 
     ];
 
     /**
@@ -25,9 +27,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'Pass', 'remember_token',
     ];
 
+    
     /**
      * The attributes that should be cast to native types.
      *
@@ -37,8 +40,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    // Relacion de uno a muchos
-    public function posts(){
-        return $this->hasMany('App\Post');
+    // Relacion de Muchos a Muchos
+    public function projects(){
+        return $this->belongsToMany(Project::class, 'usuario_proyecto', 'user_id', 'project_id');        
     }
 }

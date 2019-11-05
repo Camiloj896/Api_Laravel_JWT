@@ -18,8 +18,8 @@ Class JwtAuth{
         // Buscar Si existe el usuario con sus credenciales
 
         $user = User::where([
-            'email' => $email,
-            'password' => $password
+            'Email' => $email,
+            'Pass' => $password
         ])->first();
 
         // Comprobar si son correctas
@@ -56,11 +56,12 @@ Class JwtAuth{
             $data = array(
                 "status" => "error",
                 "code" => 400,
-                "message" => "Login Incorrecto");
+                "message" => "Login Incorrecto"
+            );
 
         }
 
-        // Devolver ñps datos decodificados o el token, en funcion de un parametro
+        // Devolver los datos decodificados o el token, en funcion de un parametro
         
         return $data;
     }
