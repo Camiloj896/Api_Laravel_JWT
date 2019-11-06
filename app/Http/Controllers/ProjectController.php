@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Project;
 
 class ProjectController extends Controller
@@ -30,30 +31,35 @@ class ProjectController extends Controller
 
                 // Validar datos    
                 $validate = \Validator::make($params_array, [
-                    'pcomision_id'   => 'integer',
-                    'metodologia_id' => 'integer',
-                    'solucion_id'    => 'integer',
-                    'plataforma_id'  => 'integer',
-                    'estatus_id'     => 'integer',
-                    'tipore_id'      => 'integer',
-                    'fentrega_id'    => 'integer',
-                    'Jobnumber'      => 'required|regex:/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ\s]*$/',
-                    'Jobnumber_LDCG' => 'integer',
-                    'Pname'          => 'required|regex:/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ\s]*$/',
-                    'Cliente'        => 'alpha',
-                    'KantarProject'  => 'boolean',   
-                    'Link_KP'        => 'alpha_num',         
-                    'Qlib_uso'       => 'alpha',                    
-                    'Qlib_Link'      => 'alpha_num',
-                    'Qlib_NA'        => 'alpha',
-                    'Qlib_Metadata'  => 'boolean',
-                    'Qlib_porqueM'   => 'alpha',
-                    'Qlib_Web'       => 'boolean',
-                    'Qlib_porqueW'   => 'alpha',
-                    'Manager'        => 'required|integer',
-                    'RDM'            => 'required|integer',
-                    'DP'             => 'integer',
-                    'Script'         => 'integer'                    
+                    'pcomision_id'       => 'integer',
+                    'metodologia_id'     => 'integer',
+                    'solucion_id'        => 'integer',
+                    'plataforma_id'      => 'integer',
+                    'estatus_id'         => 'integer',
+                    'tipore_id'          => 'integer',
+                    'fentrega_id'        => 'integer',
+                    'Jobnumber'          => 'required|regex:/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ\s]*$/',
+                    'Jobnumber_LDCG'     => 'integer',
+                    'Pname'              => 'required|regex:/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ\s]*$/',
+                    'Cliente'            => 'alpha',
+                    'KantarProject'      => 'boolean',   
+                    'Link_KP'            => 'alpha_num',         
+                    'Qlib_uso'           => 'alpha',                    
+                    'Qlib_Link'          => 'alpha_num',
+                    'Qlib_NA'            => 'alpha',
+                    'Qlib_Metadata'      => 'boolean',
+                    'Qlib_porqueM'       => 'alpha',
+                    'Qlib_Web'           => 'boolean',
+                    'Qlib_porqueW'       => 'alpha',
+                    'Manager'            => 'required|integer',
+                    'RDM'                => 'required|integer',
+                    'DP'                 => 'integer',
+                    'Script'             => 'integer',
+                    'MultiCategoria'     => 'alpha',
+                    'Num_MultiCategoria' => 'integer',
+                    'MultiCountry'       => 'alpha',
+                    'Num_MultiCountry'   => 'integer'
+
                 ]);
 
                 if($validate->fails()){
@@ -94,16 +100,56 @@ class ProjectController extends Controller
                     // GUARDAR INFORMACION PROYECTO                    
                     $proyecto->save();
 
-                    // GUARDAR INFORMACION 
+                    //GUARDAR INFORMACIÓN MULTI CATEGORIA
+                    //-------------------------------------------->
+                    if(isset($params_array['MultiCategoria'])){
+                        //GUARDAR SI SELECCIONO Si/Yes (1)
+                        if($params_array['MultiCategoria'] == 1){                           
+                            //GUARDAR DATOS MULTI CATEGORIA X CADA DATO                            
+                            for ($i=1; $i <= $params_array['Num_MultiCategoria']; $i++) {                                   
+                                $proyecto->categories()->create([ 'Mname' => $params_array['Category'].$i ]);                                                                                                                              
+                            }
+                        }
+                    }
+
+                    //GUARDAR INFORMACIÓN MULTI COUNTRY
+                    //-------------------------------------------->
+                    if(isset($params_array['MultiCountry'])){
+                        //GUARDAR SI SELECCIONO Si/Yes (1)
+                        if($params_array['MultiCountry'] == 1){                           
+                            //OBTENER DATOS DEL PAIS (Nombre, Id)
+                            $countries = DB::table('pais_campo')->get();
+                            //GUARDAR DATOS MULTI CATEGORIA X CADA DATO
+                            for ($i=1; $i <= $params_array['Num_MultiCountry']; $i++) {                                                                
+                                foreach ($countries as $country) {
+                                    if($country->Pais == $params_array['Country'].$i){
+                                        $proyecto->countries()->attach($country->id);
+                                    }                                        
+                                }                                                           
+                            }
+                        }
+                    }
                     
-                    //
+                    
+                    //GUARDAR INFORMACIÓN RESPONSABLES
+                    //-------------------------------------------->
                     $proyecto->users()->attach($params_array['Manager']);
                     $proyecto->users()->attach($params_array['RDM']);
                     if(isset($params_array['DP'])){ $proyecto->users()->attach($params_array['DP']); }
                     if(isset($params_array['Script'])){ $proyecto->users()->attach($params_array['Script']); }
-                    
-                    
-                    
+
+                    //GUARDAR INFORMACIÓN CONTACTOS ADICIONALES
+                    //-------------------------------------------->
+                    if (isset($_POST["contactos_ad"])) {
+                        $AddContact = explode("/", $_POST["contactos_ad"]);
+                        $numAux = count($AddContact);
+                        for ($i=0; $i < $numAux; $i++) {
+                            if($AddContact[$i] <> ""){
+                                $proyecto->users()->attach($AddContact[$i]);
+                            }
+                        }
+                    }                   
+                       
                     $data  = array(
                         'status' => 'success',
                         'code' => 200,

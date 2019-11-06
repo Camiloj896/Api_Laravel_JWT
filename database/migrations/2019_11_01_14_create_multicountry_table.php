@@ -15,8 +15,8 @@ class CreateMulticountryTable extends Migration
     {
         Schema::create('multicountry', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('pcomision_id');
-            $table->foreign('pcomision_id')->references('id')->on('pais_comision');
+            $table->unsignedInteger('countryfield_id');
+            $table->foreign('countryfield_id')->references('id')->on('pais_campo');
             $table->unsignedInteger('project_id');
             $table->foreign('project_id')->references('id')->on('projects');
             $table->timestamps();

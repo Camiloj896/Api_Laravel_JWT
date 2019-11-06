@@ -14,6 +14,6 @@ class Category extends Model
 
     // Relacion de uno a muchos
     public function projects(){
-        return $this->hasMany(Project::class);
+        return $this->belongsTo(Project::class);
     }
 }

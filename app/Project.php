@@ -3,8 +3,8 @@
 namespace App;
 
 use Illuminate\Notifications\Notifiable;
-
 use Illuminate\Database\Eloquent\Model;
+
 
 class Project extends Model
 {
@@ -25,6 +25,19 @@ class Project extends Model
     public function users(){
         return $this->belongsToMany(User::class, 'usuario_proyecto', 'project_id', 'user_id');        
     }
+
+    // Relacion de uno a muchos
+    public function categories(){
+        return $this->hasMany(Category::class,"project_id");        
+    }
+
+    // Relacion de Muchos a Muchos
+    public function countries(){
+        return $this->belongsToMany(User::class, 'multicountry', 'project_id', 'countryfield_id');        
+    }
+
+
+    
 
     
 }
