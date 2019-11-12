@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->string('Area',25)->nullable();
             $table->string('Pass',70)->nullable();
             $table->string('ForgotPass',25)->nullable();
+            $table->string('Estado',25)->nullable();
             $table->string('Cargo',25)->nullable();
             $table->timestamps();
         });

@@ -177,6 +177,78 @@ class ProjectController extends Controller
         }        
 
         return response()->json($data, $data['code']);
+    }
+
+    //MOSTRAR INFORMACION DEL PROYECTO
+    //--------------------------------------->    
+    public function show($id){
+
+        $token = $reuqest->header('Autorization');
+        $JwtAuth = new \JwtAuth;
+        $checkToken = $JwtAuth->checkToken($token);
+
+        if($checkToken){
+
+            $project = Project::findOrFail($id);
+
+            $show  = array(
+                'status' => 'success',
+                'code' => 200,
+                'proyecto' => $project,
+                'usuarios' => $project->users(),
+                'categorias' => $project->categories(),
+                'paises' => $project->countries()
+            ); 
+
+        }else{
+            
+            $show  = array(
+                'status' => 'error',
+                'code' => 404,
+                'message' => 'El Token es invalido'                
+            ); 
+
+        }
+
+        return response()->json($show, $show['code']);
 
     }
+
+    //ACTUALIZAR INFORMACION DEL PROYECTO
+    //--------------------------------------->
+    public function updated(Request $reuqest, $id){
+
+    }
+
+    //ARCHIVAR/ELIMINAR PROYECTO
+    //------------------------------------->
+    public function delete($id){
+
+        $token = $reuqest->header('Autorization');
+        $JwtAuth = new \JwtAuth;
+        $checkToken = $JwtAuth->checkToken($token);
+
+        if($checkToken){
+            $project = Project::findOrFail($id);
+            $project->estatus_id = 6;
+            $project->refresh();    
+            $delete  = array(
+                'status' => 'success',
+                'code' => 200,
+                'message' => 'El proyecto se ha actualizado',
+                'user' => $project
+            ); 
+        }else{
+            $delete  = array(
+                'status' => 'error',
+                'code' => 404,
+                'message' => 'El Token es invalido'                
+            ); 
+        }
+
+        return response()->json($delete, $delete["code"]);      
+
+    }
+
+
 }

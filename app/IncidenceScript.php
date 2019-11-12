@@ -13,7 +13,7 @@ class IncidenceScript extends Model
     protected $tabla = 'incidencias_script';
 
     protected $fillable = [
-        'project_id', 'tincidenceScript_id', 'Comment_id', 'Ver_Material', 'Ver_Script', 'Pregunta', 'Acepta_RDM', 'Acepta_LDC', 'NoCambio', 'fecha_Live',
+        'project_id', 'tincidenceScript_id', 'Ver_Material', 'Ver_Script', 'Pregunta', 'Acepta_RDM', 'Acepta_LDC', 'NoCambio', 'fecha_Live',
     ];
 
     // Relacion de Muchos a Muchos

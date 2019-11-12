@@ -15,7 +15,7 @@ class CreateManagerTable extends Migration
     {
         Schema::create('manager', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('Nombre', 30);
+            $table->string('Nombre', 30)->nullable();
             $table->timestamps();
         });
     }

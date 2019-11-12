@@ -18,8 +18,14 @@ use Illuminate\Http\Request;
 
 Route::post('/register', 'UserController@register');
 Route::post('/login', 'UserController@login');
-// Route::post('/user/updated', 'UserController@updated');
+Route::post('/show/{id}', 'UserController@show');
+Route::post('/user/update/{id}', 'UserController@updated');
+Route::post('/user/delete/id', 'UserController@delete');
+Route::post('/user/project/id', 'UserController@project');
 
 /* RUTAS DEL PROYECTO
 ---------------------------*/
 Route::post('/project/new', 'ProjectController@create');
+Route::post('/show/id', 'ProjectController@show');
+Route::post('/user/update/{id}', 'ProjectController@updated');
+Route::post('/user/delete/id', 'ProjectController@delete');

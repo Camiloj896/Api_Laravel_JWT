@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRolTable extends Migration
+class CreateCostDateTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateRolTable extends Migration
      */
     public function up()
     {
-        Schema::create('rol', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('tipo', 10)->nullable();
+        Schema::create('cost_date', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->date('Fecha')->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ class CreateRolTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('rol');
+        Schema::dropIfExists('cost_date');
     }
 }

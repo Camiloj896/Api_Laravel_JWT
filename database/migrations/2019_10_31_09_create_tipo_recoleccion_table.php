@@ -15,7 +15,7 @@ class CreateTipoRecoleccionTable extends Migration
     {
         Schema::create('tipo_recoleccion', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('Tipo',30);            
+            $table->string('Tipo',30)->nullable();            
             $table->timestamps();
         });
     }

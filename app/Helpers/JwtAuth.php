@@ -26,7 +26,9 @@ Class JwtAuth{
 
         $signup = false;
         if(is_object($user)){
-            $signup = true;
+            if($user->Estado == "Activo"){
+                $signup = true;
+            }            
         }
 
         //Generar el token con los datos del usuario identificado

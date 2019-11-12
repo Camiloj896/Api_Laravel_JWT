@@ -21,5 +21,9 @@ class DatabaseSeeder extends Seeder
         $this->call(EstatusSeeder::class);        
         $this->call(TipoRecoleccionSeeder::class); 
         $this->call(FrecuenciaSeeder::class); 
+        $this->call(PaisCampoSeeder::class);
+        $this->call(TypeIncidenceScript::class);
+        $this->call(CausalIncidenceScript::class);        
+                
     }
 }

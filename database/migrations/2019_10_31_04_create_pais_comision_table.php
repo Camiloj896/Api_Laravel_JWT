@@ -15,8 +15,8 @@ class CreatePaisComisionTable extends Migration
     {
         Schema::create('pais_comision', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('Nombre',30);
-            $table->integer('Jobnumber_local');
+            $table->string('Nombre',30)->nullable();
+            $table->integer('Jobnumber_local')->nullable();
             $table->timestamps();
         });
     }

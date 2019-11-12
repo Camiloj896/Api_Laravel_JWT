@@ -15,7 +15,7 @@ class CreateFrecuenciaEntregaTable extends Migration
     {
         Schema::create('frecuencia_entrega', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('Frecuencia',10);
+            $table->string('Frecuencia',10)->nullable();
             $table->timestamps();
         });
     }

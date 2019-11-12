@@ -15,7 +15,17 @@ class CreateAdProjectTable extends Migration
     {
         Schema::create('ad_project', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamps();
+            $table->unsignedInteger('project_id');
+            $table->foreign('project_id')->references('id')->on('projects');
+            $table->integer('EncuestasM')->nullable();
+            $table->integer('EncuestasPC')->nullable();
+            $table->integer('TiempoEncuM')->nullable();
+            $table->integer('TiempoEncuPC')->nullable();
+            $table->integer('Encu_Tiempo')->nullable();
+            $table->integer('Encu_Covi')->nullable();
+            $table->integer('Encu_Incompletas')->nullable();                       
+            $table->integer('Encu_Cuota')->nullable();
+            $table->timestamps();            
         });
     }
 

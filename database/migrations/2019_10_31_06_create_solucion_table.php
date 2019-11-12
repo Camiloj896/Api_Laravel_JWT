@@ -15,7 +15,7 @@ class CreateSolucionTable extends Migration
     {
         Schema::create('solucion', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('Tipo', 25);
+            $table->string('Tipo', 25)->nullable();
             $table->timestamps();
         });
     }

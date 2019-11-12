@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRolTable extends Migration
+class CreateTypeIncidenceScriptTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateRolTable extends Migration
      */
     public function up()
     {
-        Schema::create('rol', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('tipo', 10)->nullable();
+        Schema::create('type_incidence_script', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string("Tipo_en",50)->nullable();
+            $table->string("Tipo_es",50)->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ class CreateRolTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('rol');
+        Schema::dropIfExists('type_incidence_script');
     }
 }

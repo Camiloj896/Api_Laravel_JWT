@@ -17,7 +17,7 @@ class CreateMulticategoriaTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('project_id');
             $table->foreign('project_id')->references('id')->on('projects');
-            $table->string("Mname", 25);            
+            $table->string("Mname", 25)->nullable();            
             $table->timestamps();
         });
     }
