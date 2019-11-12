@@ -8,6 +8,11 @@ class Category extends Model
 {
     protected $tabla = 'multicategoria';
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
         'project_id', 'Mname',
     ];

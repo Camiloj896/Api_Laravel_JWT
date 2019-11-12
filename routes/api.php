@@ -18,14 +18,19 @@ use Illuminate\Http\Request;
 
 Route::post('/register', 'UserController@register');
 Route::post('/login', 'UserController@login');
-Route::post('/show/{id}', 'UserController@show');
-Route::post('/user/update/{id}', 'UserController@updated');
-Route::post('/user/delete/id', 'UserController@delete');
-Route::post('/user/project/id', 'UserController@project');
+Route::get('/show/{id}', 'UserController@show');
+Route::put('/user/update/{id}', 'UserController@updated');
+Route::delete('/user/delete/id', 'UserController@delete');
+Route::get('/user/project/id', 'UserController@project');
 
 /* RUTAS DEL PROYECTO
 ---------------------------*/
 Route::post('/project/new', 'ProjectController@create');
-Route::post('/show/id', 'ProjectController@show');
-Route::post('/user/update/{id}', 'ProjectController@updated');
-Route::post('/user/delete/id', 'ProjectController@delete');
+Route::get('/show/id', 'ProjectController@show');
+Route::put('/user/update/{id}', 'ProjectController@updated');
+Route::delete('/user/delete/id', 'ProjectController@delete');
+
+/* RUTAS INCIDENCIAS DE SCRIPT
+------------------------------------*/
+Route::post('/incidence/script', 'IncidenceScriptController@register');
+Route::get('/incidence/script/id', 'IncidenceScriptController@show');

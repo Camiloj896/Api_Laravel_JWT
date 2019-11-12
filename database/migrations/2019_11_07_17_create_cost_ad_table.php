@@ -14,7 +14,7 @@ class CreateCostAdTable extends Migration
     public function up()
     {
         Schema::create('cost_ad', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('Tipo',30)->nullable();

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCostDateTable extends Migration
+class CreateComentariosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,12 @@ class CreateCostDateTable extends Migration
      */
     public function up()
     {
-        Schema::create('cost_date', function (Blueprint $table) {
+        Schema::create('comentarios', function (Blueprint $table) {
             $table->increments('id');
-            $table->date('Fecha')->nullable();
+            $table->unsignedInteger('incidenciaScript_id');
+            $table->foreign('incidenciaScript_id')->references('id')->on('incidence_scripts');   
+            $table->string('Comentario')->nullable();
+            $table->string('Email')->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +30,6 @@ class CreateCostDateTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cost_date');
+        Schema::dropIfExists('comentarios');
     }
 }

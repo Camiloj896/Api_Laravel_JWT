@@ -15,7 +15,7 @@ class CreatePaisCampoTable extends Migration
     {
         Schema::create('pais_campo', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('Pais',25)->nullable();
+            $table->string('Pais',50)->nullable();
             $table->timestamps();
         });
     }

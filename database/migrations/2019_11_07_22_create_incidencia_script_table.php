@@ -13,20 +13,22 @@ class CreateIncidenciaScriptTable extends Migration
      */
     public function up()
     {
-        Schema::create('incidencia_script', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->timestamps();
+        Schema::create('incidence_scripts', function (Blueprint $table) {
+            $table->increments('id');
             $table->unsignedInteger('project_id');
             $table->foreign('project_id')->references('id')->on('projects');            
-            $table->unsignedInteger('tincidenceScript_id');
-            $table->foreign('tincidenceScript_id')->references('id')->on('type_incidence_script'); 
+            $table->unsignedInteger('tincidenceScript_id')->nullable();
+            $table->foreign('tincidenceScript_id')->references('id')->on('type_incidence_script');
+            $table->unsignedInteger('cincidenceScript_id')->nullable();
+            $table->foreign('cincidenceScript_id')->references('id')->on('causal_incidencia_script');
             $table->integer('Ver_Material')->nullable();
             $table->integer('Ver_Script')->nullable();
             $table->string('Pregunta')->nullable();
+            $table->string('Ronda')->nullable();
             $table->boolean('Acepta_RDM')->nullable();
             $table->boolean('Acepta_LDC')->nullable();
-            $table->boolean('NoCambio')->nullable();
-            $table->date('fecha_Live')->nullable();
+            $table->boolean('NoCambio')->nullable();            
+            $table->timestamps();
         });
     }
 

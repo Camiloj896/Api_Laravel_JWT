@@ -14,9 +14,9 @@ class CreateTypeIncidenceScriptTable extends Migration
     public function up()
     {
         Schema::create('type_incidence_script', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string("Tipo_en",50)->nullable();
-            $table->string("Tipo_es",50)->nullable();
+            $table->increments('id');
+            $table->string("Tipo_en",100)->nullable();
+            $table->string("Tipo_es",100)->nullable();
             $table->timestamps();
         });
     }

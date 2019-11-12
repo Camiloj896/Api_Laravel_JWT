@@ -8,6 +8,11 @@ class CountryField extends Model
 {
     protected $tabla = 'pais_campo';
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
         'Pais',
     ];

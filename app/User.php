@@ -42,6 +42,6 @@ class User extends Authenticatable
 
     // Relacion de Muchos a Muchos
     public function projects(){
-        return $this->belongsToMany(Project::class, 'usuario_proyecto', 'user_id', 'project_id');        
+        return $this->belongsToMany(Project::class, 'usuario_proyecto', 'project_id', 'user_id');        
     }
 }
