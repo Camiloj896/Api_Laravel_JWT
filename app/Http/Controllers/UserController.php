@@ -8,7 +8,7 @@ use App\User;
 class UserController extends Controller
 {
     //REGISTRO DE USUARIO
-    //--------------------------
+    //-------------------------->
     public function register(Request $request){
         
         // Recoger los datos por POST            
@@ -76,7 +76,7 @@ class UserController extends Controller
     }
 
     //LOGIN DE USUARIO
-    //--------------------------
+    //-------------------------->
     public function login(Request $request){
 
         $JwtAuth = new \JwtAuth();
@@ -131,28 +131,54 @@ class UserController extends Controller
 
     //MOSTRAR INFO USUARIO/USUARIOS
     //------------------------------------->
-    public function show($id){
+    public function show(Request $request, $id = null){
 
-        if(isset($id)){
-            $users = User::findOrFail($id);
-        }else{
-            $users = App\User::where('Estado', "Activo")->get();
-        }
-
-        return response()->json($users, 200);      
-
-    }
-
-    //ACTUALIZAR INFORMACION USUARIO
-    //------------------------------------->
-    public function updated(Request $reuqest, $id){
-
-        $token = $reuqest->header('Autorization');
+        $token = $request->header('Autorization');
         $JwtAuth = new \JwtAuth;
         $checkToken = $JwtAuth->checkToken($token);
 
         if($checkToken){
 
+            if(isset($id)){
+                $users = User::findOrFail($id);
+
+                $show  = array(
+                    'status' => 'success',
+                    'code' => 200,
+                    'users' => $users                
+                );
+
+            }else{
+                $users = User::all()->where('Estado', 'Activo'); 
+                
+                $show  = array(
+                    'status' => 'success',
+                    'code' => 200,
+                    'users' => $users                
+                );               
+            }
+        }else{
+            $show  = array(
+                'status' => 'error',
+                'code' => 404,
+                'message' => 'El Token es invalido'                
+            );
+        }
+
+        return response()->json($show, $show['code']);      
+
+    }
+
+    //ACTUALIZAR INFORMACION USUARIO
+    //------------------------------------->
+    public function updated(Request $request, $id = null){
+
+        $token = $request->header('Autorization');
+        $JwtAuth = new \JwtAuth;
+        $checkToken = $JwtAuth->checkToken($token);
+
+        if($checkToken){
+            $userData = $JwtAuth->checkToken($token,true);
             // Recoger los datos por POST            
             $json = $request->input("json", null);            
             $params_array = json_decode($json, true);
@@ -184,18 +210,24 @@ class UserController extends Controller
 
                 }else{
 
-                    $user = User::findOrFail($id);
+                    //VALIDAR SI EL ID
+                    if(isset($id)){
+                        $user = User::findOrFail($id);
+                    }else{
+                        //OBTENER EL ID POR EL TOKEN
+                        $user = User::findOrFail($userData->sub);
+                    }                    
 
-                    if(isset($params_array['rol_id'])){ $user->number = $params_array['rol_id']; }
-                    if(isset($params_array['manager_id'])){ $user->number = $params_array['manager_id']; }
-                    if(isset($params_array['Fname'])){ $user->number = $params_array['Fname']; }
-                    if(isset($params_array['Lname'])){ $user->number = $params_array['Lname']; }
-                    if(isset($params_array['Email'])){ $user->number = $params_array['Email']; }
-                    if(isset($params_array['Area'])){ $user->number = $params_array['Area']; }
-                    if(isset($params_array['Pass'])){ $user->number = $params_array['Pass']; }
-                    if(isset($params_array['Cargo'])){ $user->number = $params_array['Cargo']; }
+                    if(isset($params_array['rol_id'])){ $user->rol_id = $params_array['rol_id']; }
+                    if(isset($params_array['manager_id'])){ $user->manager_id = $params_array['manager_id']; }
+                    if(isset($params_array['Fname'])){ $user->Fname = $params_array['Fname']; }
+                    if(isset($params_array['Lname'])){ $user->Lname = $params_array['Lname']; }
+                    if(isset($params_array['Email'])){ $user->Email = $params_array['Email']; }
+                    if(isset($params_array['Area'])){ $user->Area = $params_array['Area']; }
+                    if(isset($params_array['Pass'])){ $user->Pass = $params_array['Pass']; }
+                    if(isset($params_array['Cargo'])){ $user->Cargo = $params_array['Cargo']; }
 
-                    $user->refresh();
+                    $user->save();
 
                     $update  = array(
                         'status' => 'success',
@@ -230,16 +262,16 @@ class UserController extends Controller
 
     //ARCHIVAR/ELIMINAR USUARIO
     //------------------------------------->
-    public function delete($id){
+    public function delete(Request $request, $id){
 
-        $token = $reuqest->header('Autorization');
+        $token = $request->header('Autorization');
         $JwtAuth = new \JwtAuth;
         $checkToken = $JwtAuth->checkToken($token);
 
         if($checkToken){
             $user = User::findOrFail($id);
             $user->Estado = 'Inactivo';
-            $user->refresh();    
+            $user->save();    
             $delete  = array(
                 'status' => 'success',
                 'code' => 200,
@@ -261,21 +293,23 @@ class UserController extends Controller
     // MOSTRAR LOS PROYECTOS ASOCIADOS AL USUARIO
     // ------------------------------------------------->    
 
-    public function project($id){
+    public function project(Request $request){
 
-        $token = $reuqest->header('Autorization');
+        $token = $request->header('Autorization');
         $JwtAuth = new \JwtAuth;
         $checkToken = $JwtAuth->checkToken($token);
 
         if($checkToken){
             
-            $user = User::findOrFail($id);                      
+            $userData = $JwtAuth->checkToken($token,true);
+            // $userData->sub
+            $user = User::findOrFail(1);                      
 
             $project  = array(
                 'status' => 'success',
                 'code' => 200,
                 'message' => 'Los proyectos asociados al usuario',
-                'project' => $user->projects()
+                'project' => $user->projects
             ); 
 
         }else{

@@ -130,7 +130,6 @@ class ProjectController extends Controller
                         }
                     }
                     
-                    
                     //GUARDAR INFORMACIÓN RESPONSABLES
                     //-------------------------------------------->
                     $proyecto->users()->attach($params_array['Manager']);
@@ -181,9 +180,9 @@ class ProjectController extends Controller
 
     //MOSTRAR INFORMACION DEL PROYECTO
     //--------------------------------------->    
-    public function show($id){
+    public function show(Request $request, $id){
 
-        $token = $reuqest->header('Autorization');
+        $token = $request->header('Autorization');
         $JwtAuth = new \JwtAuth;
         $checkToken = $JwtAuth->checkToken($token);
 
@@ -195,9 +194,9 @@ class ProjectController extends Controller
                 'status' => 'success',
                 'code' => 200,
                 'proyecto' => $project,
-                'usuarios' => $project->users(),
-                'categorias' => $project->categories(),
-                'paises' => $project->countries()
+                'usuarios' => $project->users,
+                'categorias' => $project->categories,
+                'paises' => $project->countries
             ); 
 
         }else{

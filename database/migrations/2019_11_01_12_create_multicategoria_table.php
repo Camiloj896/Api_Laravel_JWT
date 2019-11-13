@@ -13,7 +13,7 @@ class CreateMulticategoriaTable extends Migration
      */
     public function up()
     {
-        Schema::create('multicategoria', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('project_id');
             $table->foreign('project_id')->references('id')->on('projects');

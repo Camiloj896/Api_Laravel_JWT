@@ -13,4 +13,6 @@ class UserSeeder extends Seeder
     {
         factory(App\User::class, 200)->create();
     }
+
+    // {"rol_id": 1, "manager_id": 2, "Fname": "Camilo", "Lname": "jimenez", "Email": "camilo.boyaca@kantar.com", "Area": "LDC", "Pass": "Camilo1234", "Cargo": "Junior"}
 }

@@ -95,11 +95,27 @@ class IncidenceScriptController extends Controller
 
     //MOSTRAR INFO INCIDENCIAS
     //------------------------------------->
-    public function show($id){
+    public function show($id = null){
 
-        $incidence = App\IncidenceScript::where('project_id', $id)->get();        
+        if(isset($id)){
+            $incidence = IncidenceScript::where('project_id', $id)->firstOrFail();                        
+            $data  = array(
+                'status' => 'success',
+                'code' => 200,
+                'incidence' => $incidence,
+                'comments' => $incidence->comments()
+            );  
+        }else{
+            $incidence = IncidenceScript::all();            
+            $data  = array(
+                'status' => 'success',
+                'code' => 200,
+                'incidence' => $incidence,
+                'comments' => $incidence->comments()
+            );
+        }        
 
-        return response()->json($incidence, 200);      
+        return response()->json($data, $data['code']);
 
     }
 

@@ -25,32 +25,39 @@ Class JwtAuth{
         // Comprobar si son correctas
 
         $signup = false;
-        if(is_object($user)){
-            if($user->Estado == "Activo"){
-                $signup = true;
-            }            
+        if(is_object($user)){            
+            $signup = true;            
         }
 
         //Generar el token con los datos del usuario identificado
 
         if($signup){
 
-            $token = array(
-                "sub"   => $user->id,
-                "email" => $user->email,
-                "name" => $user->name,
-                "surmane" => $user->surname,
-                "iat" => time(),
-                "exp" => time() + (7 * 24 *60 * 60)
-            );
+            if($user->Estado == "Activo"){
 
-            $jwt = JWT::encode($token, $this->key, 'HS256');
-            $decoded = JWT::decode($jwt, $this->key, ['HS256']);
+                $token = array(
+                    "sub"   => $user->id,
+                    "Email" => $user->Email,                    
+                    "iat" => time(),
+                    "exp" => time() + (7 * 24 *60 * 60)
+                );
 
-            if(is_null($getToken)){
-                $data = $jwt;
+                $jwt = JWT::encode($token, $this->key, 'HS256');
+                $decoded = JWT::decode($jwt, $this->key, ['HS256']);
+
+                if(is_null($getToken)){
+                    $data = $jwt;
+                }else{
+                    $data = $decode;
+                }
+
             }else{
-                $data = $decode;
+
+                $data = array(
+                    "status" => "error",
+                    "code" => 400,
+                    "message" => "Usuario Inactivo"                
+                );
             }
         
         }else{
@@ -58,7 +65,7 @@ Class JwtAuth{
             $data = array(
                 "status" => "error",
                 "code" => 400,
-                "message" => "Login Incorrecto"
+                "message" => "Login Incorrecto"                
             );
 
         }
