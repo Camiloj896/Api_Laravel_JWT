@@ -13,65 +13,64 @@ Class JwtAuth{
         $this->key = "esto es una key secreta";
     }
 
-    public function signup($email, $password, $getToken = null){    
+    public function signup($user, $password, $getToken = null){
 
         // Buscar Si existe el usuario con sus credenciales
 
-        $user = User::where([
-            'Email' => $email,
-            'Pass' => $password
+        $users = User::where([
+            'user' => $user,
+            'password' => $password
         ])->first();
 
         // Comprobar si son correctas
 
         $signup = false;
-        if(is_object($user)){            
-            $signup = true;            
+        if(is_object($users)){
+            $signup = true;
         }
 
         //Generar el token con los datos del usuario identificado
 
         if($signup){
 
-            if($user->Estado == "Activo"){
+            $token = array(
+                "sub"   => $users->id,
+                "user" => $users->user,
+                "iat" => time(),
+                "exp" => time() + (7 * 24 *60 * 60)
+            );
 
-                $token = array(
-                    "sub"   => $user->id,
-                    "Email" => $user->Email,                    
-                    "iat" => time(),
-                    "exp" => time() + (7 * 24 *60 * 60)
-                );
+            $jwt = JWT::encode($token, $this->key, 'HS256');
+            $decoded = JWT::decode($jwt, $this->key, ['HS256']);
 
-                $jwt = JWT::encode($token, $this->key, 'HS256');
-                $decoded = JWT::decode($jwt, $this->key, ['HS256']);
-
-                if(is_null($getToken)){
-                    $data = $jwt;
-                }else{
-                    $data = $decode;
-                }
-
-            }else{
-
+            if(is_null($getToken)){
                 $data = array(
-                    "status" => "error",
-                    "code" => 400,
-                    "message" => "Usuario Inactivo"                
+                    "status" => "success",
+                    "code" => 200,
+                    'message' => 'Bienvenido!',
+                    "token" => $jwt
+                );
+            }else{
+                $data = array(
+                    "status" => "success",
+                    "code" => 200,
+                    'message' => 'Bienvenido!',
+                    "user" => $decoded
                 );
             }
-        
+
         }else{
 
             $data = array(
                 "status" => "error",
                 "code" => 400,
-                "message" => "Login Incorrecto"                
+                'message' => 'El usuario no se ha podido identificar'
             );
 
         }
 
         // Devolver los datos decodificados o el token, en funcion de un parametro
-        
+
         return $data;
     }
 
@@ -97,7 +96,7 @@ Class JwtAuth{
             return $decode;
         }
 
-        return $Auth;        
+        return $Auth;
 
     }
 

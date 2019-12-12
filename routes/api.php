@@ -13,24 +13,33 @@ use Illuminate\Http\Request;
 |
 */
 
-/* RUTAS DEL USUARIO 
+/* RUTAS DEL USUARIO
 ---------------------------*/
+Route::post('/user/register', 'UserController@register');
+Route::post('/user/login', 'UserController@login');
+Route::get('/user/show', 'UserController@show');
+Route::post('/user/update', 'UserController@updated');
+Route::post('/user/delete/id', 'UserController@delete');
 
-Route::post('/user/register', 'UserController@register'); //OK
-Route::post('/user/login', 'UserController@login'); //OK
-Route::get('/user/show/{id?}', 'UserController@show'); //OK
-Route::put('/user/update/{id?}', 'UserController@updated'); //OK
-Route::delete('/user/delete/{id}', 'UserController@delete'); //OK
-Route::get('/user/project', 'UserController@project'); //OK
-
-/* RUTAS DEL PROYECTO
+/* RUTAS PRODUCTOS
 ---------------------------*/
-Route::post('/project/new', 'ProjectController@create');
-Route::get('/project/show/{id}', 'ProjectController@show');
-Route::put('/project/update/{id}', 'ProjectController@updated');
-Route::delete('/project/delete/{id}', 'ProjectController@delete');
+Route::get('/product/show', 'ProductsController@show');
+Route::post('/product/new', 'ProductsController@new');
+Route::post('/product/update/id', 'ProductsController@update');
+Route::post('/product/delete/id', 'ProductsController@delete');
 
-/* RUTAS INCIDENCIAS DE SCRIPT
-------------------------------------*/
-Route::post('/incidence/script/new', 'IncidenceScriptController@register');
-Route::get('/incidence/script/{id?}', 'IncidenceScriptController@show');
+/* RUTAS INFORMACION
+---------------------------*/
+Route::get('/category', 'CategoryController@show');
+Route::get('/brand', 'BrandsController@show');
+Route::get('/state', 'StateController@show');
+Route::get('/talla', 'TallaController@show');
+
+
+// RUTAS
+// FUNCION CONTROLLADOR USUARIOS -> MOSTRAR PROYECTOS ASOCIADOS AL USUARIOS
+
+// Model Proyecto -> relacion con USUARIOS, relación images
+// Model Images -> relación Proyecto
+// CONTROLLADOR PROYECTOS
+

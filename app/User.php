@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'rol_id', 'manager_id', 'Fname', 'Lname', 'Email', 'Area', 'Pass', 'ForgotPass', 'Cargo', 'Estado',
+        'name', 'gender', 'email', 'user', 'password',
     ];
 
     /**
@@ -27,10 +27,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'Pass', 'remember_token',
+        'password',
     ];
 
-    
+
     /**
      * The attributes that should be cast to native types.
      *
@@ -40,8 +40,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    // Relacion de Muchos a Muchos
-    public function projects(){
-        return $this->belongsToMany(Project::class, 'usuario_proyecto', 'user_id', 'project_id');        
+    public function products()
+    {
+    	return $this->hasMany(Product::class);
     }
+
 }
