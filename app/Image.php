@@ -3,11 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable;
 
-class Images extends Model
+class Image extends Model
 {
-    use Notifiable;
 
     protected $table = 'images';
 
@@ -20,7 +18,7 @@ class Images extends Model
         'product_id', 'type', 'path'
     ];
 
-    // public function Producs(){
-    //     return $this->hasMany(Products::class, "product_id");
-    // }
+    public function Product(){
+        return $this->belongsTo(Product::class);
+    }
 }

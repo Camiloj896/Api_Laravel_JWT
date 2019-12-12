@@ -176,9 +176,9 @@ class UserController extends Controller
                 $validate = \Validator::make($params_array, [
                     'name'     => 'required|alpha_dash',
                     'gender'   => 'required|alpha',
-                    'email'    => 'required|email|unique:users',
-                    'user'     => 'required|alpha_dash|unique:users', // Comprobar si el usuario existe (unique->tabla)
-                    'password' => 'required|alpha_dash',
+                    'email'    => 'required|email',
+                    'user'     => 'required|alpha_dash',
+                    'password' => 'alpha_dash',
                 ]);
 
                 if($validate->fails()){
@@ -198,7 +198,6 @@ class UserController extends Controller
                     $user->gender = $params_array['gender'];
                     $user->email = $params_array['email'];
                     $user->user = $params_array['user'];
-                    $user->password = $pwd;
 
                     $user->save();
 
@@ -233,33 +232,5 @@ class UserController extends Controller
 
     }
 
-    //ARCHIVAR/ELIMINAR USUARIO
-    //------------------------------------->
-    public function delete(Request $request, $id){
-
-        $token = $request->header('Autorization');
-        $JwtAuth = new \JwtAuth;
-        $checkToken = $JwtAuth->checkToken($token);
-
-        if($checkToken){
-            $user = User::findOrFail($id);
-            $user->delete();
-            $delete  = array(
-                'status' => 'success',
-                'code' => 200,
-                'message' => 'El usuario se ha eliminado',
-                'user' => $user
-            );
-        }else{
-            $delete  = array(
-                'status' => 'error',
-                'code' => 404,
-                'message' => 'El Token es invalido'
-            );
-        }
-
-        return response()->json($delete, $delete["code"]);
-
-    }
 
 }

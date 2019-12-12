@@ -2,12 +2,10 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
 
-class Products extends Model
+class Product extends Model
 {
-    use Notifiable;
 
     protected $table = 'products';
 
@@ -25,6 +23,6 @@ class Products extends Model
     }
 
     public function images(){
-        return $this->hasMany(Images::class, 'product_id');
+        return $this->hasMany(Image::class, 'product_id');
     }
 }
